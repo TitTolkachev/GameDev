@@ -44,7 +44,7 @@ public enum TowerType
 
 public class TowerScript : MonoBehaviour
 {
-    GameObject projectile;
+    public GameObject projectile;
     Tower selfTower;
     public TowerType selfType;
 

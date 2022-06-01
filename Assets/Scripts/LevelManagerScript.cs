@@ -8,6 +8,8 @@ public class LevelManagerScript : MonoBehaviour
     public int fieldWidth, fieldHeight;
     public float paddingX, paddingY;
 
+    int right = 8, up = 4;
+
     public GameObject cellPref;
 
     public Transform cellParent;
@@ -19,18 +21,12 @@ public class LevelManagerScript : MonoBehaviour
 
     void CreateLevel()
     {
-        //Vector3 worldVec = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 0));
-
         for(int i = 0; i < fieldHeight; i++)
-        {
             for(int j = 0; j < fieldWidth; j++)
-            {
-                CreateCell(j, i/*, worldVec*/);
-            }
-        }
+                CreateCell(j, i);
     }
 
-    void CreateCell(int x, int y/*, Vector3 wV*/)
+    void CreateCell(int x, int y)
     {
         GameObject tmpCell = Instantiate(cellPref);
 
@@ -40,12 +36,12 @@ public class LevelManagerScript : MonoBehaviour
         float sprSizeY = tmpCell.GetComponent<SpriteRenderer>().bounds.size.y;
 
         if(x == 0 && y == 0)
-            tmpCell.transform.position = new Vector3(8 + paddingX, 4 - paddingY, 0);
+            tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY, 0);
         else if(y == 0)
-            tmpCell.transform.position = new Vector3(8 + paddingX - 2 * paddingX * x - sprSizeX * x, 4 - paddingY, 0);
+            tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY, 0);
         else if(x == 0)
-            tmpCell.transform.position = new Vector3(8 + paddingX, 4 - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+            tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
         else
-            tmpCell.transform.position = new Vector3(8 + paddingX - 2 * paddingX * x - sprSizeX * x, 4 - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+            tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
     }
 }

@@ -20,6 +20,7 @@ public class EnemyScript : MonoBehaviour
     {
         if(health <= 0)
         {
+            FindObjectOfType<MoneyManagerScript>().GameMoney += 10;
             Destroy(gameObject);
         }
     }
