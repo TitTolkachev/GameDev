@@ -1,9 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManagerScript : MonoBehaviour
 {
+
+    public GameObject spawnPoint;
+    public GameObject finishPoint;
+    public GameObject[] enemies;
+    public int totalEnemies;//Врагов в уровне
+    public int enemiesPerSpawn;//Врагов в новой волне
+    public int enemiesOnScreen = 0;//Врагов на экране
+    public int spawnedEnemies = 0;//Заспавнилось в уровне
+    public float spawnDelay = 2;//Задержка между вонами
 
     public int fieldWidth, fieldHeight;
     public float paddingX, paddingY;
@@ -17,12 +27,53 @@ public class LevelManagerScript : MonoBehaviour
     void Start()
     {
         CreateLevel();
+        StartCoroutine(Spawn());
     }
+
+
+    //----------------------------------------
+    //----------------------------------------
+    //~~~~~~~~~~~~~~~~SPAWNER~~~~~~~~~~~~~~~~~
+
+    IEnumerator Spawn()
+    {
+        if (enemiesPerSpawn > 0 && spawnedEnemies < totalEnemies)
+        {
+            StartCoroutine(SpawnExtra(0));
+
+            yield return new WaitForSeconds(spawnDelay + enemiesPerSpawn);
+            StartCoroutine(Spawn());
+        }
+    }
+
+    IEnumerator SpawnExtra(int it)
+    {
+        yield return new WaitForSeconds(1);
+
+        if (it < enemiesPerSpawn)
+        {
+
+            GameObject newEnemy = Instantiate(enemies[0]) as GameObject;
+
+            int rnd = Random.Range(-4, 4);
+
+            //При помощи z-index делаю правильное наложение врагов друг на друга
+            newEnemy.transform.position = new Vector3(spawnPoint.transform.position.x, rnd - 0.4f + 1, rnd + 4);
+            enemiesOnScreen += 1;
+            spawnedEnemies += 1;
+
+            StartCoroutine(SpawnExtra(it + 1));
+        }
+    }
+
+    //----------------------------------------
+    //----------------------------------------
+    //Создание сетки, на которую ставим башни:
 
     void CreateLevel()
     {
-        for(int i = 0; i < fieldHeight; i++)
-            for(int j = 0; j < fieldWidth; j++)
+        for (int i = 0; i < fieldHeight; i++)
+            for (int j = 0; j < fieldWidth; j++)
                 CreateCell(j, i);
     }
 
@@ -35,13 +86,25 @@ public class LevelManagerScript : MonoBehaviour
         float sprSizeX = tmpCell.GetComponent<SpriteRenderer>().bounds.size.x;
         float sprSizeY = tmpCell.GetComponent<SpriteRenderer>().bounds.size.y;
 
-        if(x == 0 && y == 0)
+        if (x == 0 && y == 0)
             tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY, 0);
-        else if(y == 0)
+        else if (y == 0)
             tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY, 0);
-        else if(x == 0)
+        else if (x == 0)
             tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
         else
             tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
     }
+
+
+    //----------------------------------------
+    //----------------------------------------
+    //Функции для интерфейса:
+
+    public void ToLobbyButton()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+
 }
