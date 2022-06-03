@@ -13,7 +13,7 @@ public class CellScript : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (FindObjectOfType<ShopScript>() == null)
+        if (FindObjectOfType<ShopScript>() == null && !FindObjectOfType<LevelManagerScript>().GameIsPaused)
         {
             if(!hasTower)
                 GetComponent<SpriteRenderer>().color = CurrColor;
@@ -29,7 +29,7 @@ public class CellScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (FindObjectOfType<ShopScript>() == null)
+        if (FindObjectOfType<ShopScript>() == null && !FindObjectOfType<LevelManagerScript>().GameIsPaused)
         {
             if (!hasTower)
             {

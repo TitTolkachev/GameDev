@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Tower
 {
+    public int health = 30;
     public string Name;
     public int type, Price;
     public float range, Cooldown, CurrCooldown = 0;
@@ -45,7 +46,7 @@ public enum TowerType
 public class TowerScript : MonoBehaviour
 {
     public GameObject projectile;
-    Tower selfTower;
+    public Tower selfTower;
     public TowerType selfType;
 
     public List<Tower> AllTowers = new List<Tower>();
@@ -56,8 +57,8 @@ public class TowerScript : MonoBehaviour
         AllTowers.Add(new Tower("Tower_1", 0, 2, .3f, 50, "TowerSprites/FTower"));
         AllTowers.Add(new Tower("Tower_2", 1, 5, 1, 70, "TowerSprites/STower"));
 
-        AllProjectiles.Add(new TowerProjectile(7, 10, "ProjectilesSprites/FProjectile"));
-        AllProjectiles.Add(new TowerProjectile(3, 30, "ProjectilesSprites/SProjectile"));
+        AllProjectiles.Add(new TowerProjectile(7, 2, "ProjectilesSprites/FProjectile"));
+        AllProjectiles.Add(new TowerProjectile(3, 10, "ProjectilesSprites/SProjectile"));
 
         selfTower = AllTowers[(int)selfType];
         GetComponent<SpriteRenderer>().sprite = selfTower.Spr;
@@ -67,6 +68,8 @@ public class TowerScript : MonoBehaviour
     {
         if(CanShoot())
             SearchTarget();
+
+        CheckIsAlive();
 
         if(selfTower.CurrCooldown > 0)
         {
@@ -79,6 +82,15 @@ public class TowerScript : MonoBehaviour
         if(selfTower.CurrCooldown <= 0)
             return true;
         return false;
+    }
+
+    void CheckIsAlive()
+    {
+        if (selfTower.health <= 0)
+        {
+            gameObject.GetComponentInParent<CellScript>().hasTower = false;
+            Destroy(gameObject);
+        }
     }
 
     void SearchTarget()
@@ -110,5 +122,10 @@ public class TowerScript : MonoBehaviour
 
         proj.transform.position = transform.position;
         proj.GetComponent<TowerProjectileScript>().SetTarget(enemy);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        selfTower.health -= damage;
     }
 }

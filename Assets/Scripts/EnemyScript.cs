@@ -5,11 +5,16 @@ using UnityEngine;
 public class EnemyScript : MonoBehaviour
 {
     int health = 30;
-    int speed = 2;
+    int speed = 1;
+
+    public float CoolDown = 2;
+
+    bool IsAttacking = false;
 
     void Update()
     {
-        Move();
+        if (!IsAttacking)
+            Move();
         CheckIsAlive();
     }
 
@@ -39,4 +44,37 @@ public class EnemyScript : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Cell" && collision.GetComponent<CellScript>().hasTower)
+        {
+            IsAttacking = true;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Cell" && collision.GetComponent<CellScript>().hasTower)
+        {
+            CoolDown -= Time.deltaTime;
+            if(CoolDown <= 0)
+            {
+                CoolDown = 4;
+                collision.GetComponentInChildren<TowerScript>().TakeDamage(10);
+            }
+        }
+        List<Collider2D> colliders = new List<Collider2D>();
+        this.GetComponent<Collider2D>().GetContacts(colliders);
+
+        bool flag = true;
+        foreach(Collider2D coll in colliders)
+        {
+            if(coll.tag == "Cell" && coll.GetComponent<CellScript>().hasTower)
+                flag = false;
+        }
+        if(flag)
+            IsAttacking = false;
+    }
+
 }
