@@ -10,27 +10,39 @@ public class EnemyScript : MonoBehaviour
     public float CoolDown = 2;
 
     bool IsAttacking = false;
+    public bool IsAlive = true;
 
+    private Animator anim;
+
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
     void Update()
     {
-        if (!IsAttacking)
-            Move();
-        CheckIsAlive();
+        if (IsAlive)
+        {
+            if (!IsAttacking)
+                Move();
+            if (health <= 0)
+                StartCoroutine(Die());
+        }
     }
 
     public void TakeDamage(int damage)
     {
         health -= damage;
+        anim.SetTrigger("getHurt");
     }
 
-    void CheckIsAlive()
+    IEnumerator Die()
     {
-        if (health <= 0)
-        {
-            FindObjectOfType<LevelManagerScript>().enemiesOnScreen -= 1;
-            FindObjectOfType<MoneyManagerScript>().GameMoney += 10;
-            Destroy(gameObject);
-        }
+        IsAlive = false;
+        anim.SetBool("isAlive", false);
+        FindObjectOfType<LevelManagerScript>().enemiesOnScreen -= 1;
+        FindObjectOfType<LevelManagerScript>().GameMoney += 10;
+        yield return new WaitForSeconds(1);
+        Destroy(gameObject);
     }
 
     void Move()
@@ -38,16 +50,17 @@ public class EnemyScript : MonoBehaviour
         Vector3 dir = new Vector3(-1, 0, 0);
         transform.Translate(speed * Time.deltaTime * dir.normalized);
 
-        if(Mathf.Abs(FindObjectOfType<LevelManagerScript>().finishPoint.transform.position.x - transform.position.x) < 0.2f)
+        if (Mathf.Abs(FindObjectOfType<LevelManagerScript>().finishPoint.transform.position.x - transform.position.x) < 0.2f)
         {
             FindObjectOfType<LevelManagerScript>().enemiesOnScreen -= 1;
+            FindObjectOfType<LevelManagerScript>().health -= 1;
             Destroy(gameObject);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Cell" && collision.GetComponent<CellScript>().hasTower)
+        if (collision.tag == "Cell" && collision.GetComponent<CellScript>().hasTower)
         {
             IsAttacking = true;
         }
@@ -58,7 +71,7 @@ public class EnemyScript : MonoBehaviour
         if (collision.tag == "Cell" && collision.GetComponent<CellScript>().hasTower)
         {
             CoolDown -= Time.deltaTime;
-            if(CoolDown <= 0)
+            if (CoolDown <= 0)
             {
                 CoolDown = 4;
                 collision.GetComponentInChildren<TowerScript>().TakeDamage(10);
@@ -68,12 +81,12 @@ public class EnemyScript : MonoBehaviour
         this.GetComponent<Collider2D>().GetContacts(colliders);
 
         bool flag = true;
-        foreach(Collider2D coll in colliders)
+        foreach (Collider2D coll in colliders)
         {
-            if(coll.tag == "Cell" && coll.GetComponent<CellScript>().hasTower)
+            if (coll.tag == "Cell" && coll.GetComponent<CellScript>().hasTower)
                 flag = false;
         }
-        if(flag)
+        if (flag)
             IsAttacking = false;
     }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelManagerScript : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class LevelManagerScript : MonoBehaviour
     public GameObject spawnPoint;
     public GameObject finishPoint;
     public GameObject[] enemies;
+    public Text HealthText;
+    public Text MoneyText;
+    public int health = 5;//Жизни
+    public int GameMoney;//Деньги
     public int totalEnemies;//Врагов в уровне
     public int enemiesPerSpawn;//Врагов в новой волне
     public int enemiesOnScreen = 0;//Врагов на экране
@@ -21,6 +26,8 @@ public class LevelManagerScript : MonoBehaviour
     int right = 8, up = 4;
 
     public bool GameIsPaused = false;
+    public bool DestroyIsOpen = false;
+
     public GameObject PauseMenuUI;
 
     public GameObject cellPref;
@@ -35,13 +42,24 @@ public class LevelManagerScript : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        //Вызов меню
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (GameIsPaused)
                 Resume();
             else
                 Pause();
         }
+
+        //Конец игры
+        if (health <= 0)
+        {
+            ToLobbyButton();
+        }
+
+        //Перерасчет жизней и денег
+        HealthText.text = "Health: " + health.ToString();
+        MoneyText.text = GameMoney.ToString();
     }
 
 
@@ -67,7 +85,7 @@ public class LevelManagerScript : MonoBehaviour
         if (it < enemiesPerSpawn)
         {
 
-            GameObject newEnemy = Instantiate(enemies[0]) as GameObject;
+            GameObject newEnemy = Instantiate(enemies[0]);
 
             int rnd = Random.Range(-4, 4);
 

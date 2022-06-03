@@ -104,6 +104,7 @@ MonoBehaviour:
   DestroyColor: {r: 1, g: 0.28773582, b: 0.28773582, a: 1}
   ShopPref: {fileID: 1066885785619874715, guid: 1f20be49f07aea64480667fbf7e74f48, type: 3}
   TowerPref: {fileID: 6443141169346290803, guid: 4fc3aca8ebb6aa845b238e5c9e8f2730, type: 3}
+  DestroyTowerPref: {fileID: 1294079372542178562, guid: 1346be688b4240f449d41317615cff10, type: 3}
 --- !u!61 &207118813933110112
 BoxCollider2D:
   m_ObjectHideFlags: 0

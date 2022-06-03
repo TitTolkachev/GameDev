@@ -35,10 +35,10 @@ public class ShopItemScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerClick(PointerEventData eventData)//Нажатие
     {
-        if(FindObjectOfType<MoneyManagerScript>().GameMoney >= selfTower.Price)
+        if(FindObjectOfType<LevelManagerScript>().GameMoney >= selfTower.Price)
         {
             selfCell.BuildTower(selfTower);
-            FindObjectOfType<MoneyManagerScript>().GameMoney -= selfTower.Price;
+            FindObjectOfType<LevelManagerScript>().GameMoney -= selfTower.Price;
         }
     }
 }

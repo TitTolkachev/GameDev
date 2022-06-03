@@ -9,11 +9,13 @@ public class CellScript : MonoBehaviour
 
     public Color BaseColor, CurrColor, DestroyColor;
 
-    public GameObject ShopPref, TowerPref;
+    public GameObject ShopPref, TowerPref, DestroyTowerPref;
 
     private void OnMouseEnter()
     {
-        if (FindObjectOfType<ShopScript>() == null && !FindObjectOfType<LevelManagerScript>().GameIsPaused)
+        if (FindObjectOfType<ShopScript>() == null 
+            && !FindObjectOfType<LevelManagerScript>().GameIsPaused 
+            && !FindObjectOfType<LevelManagerScript>().DestroyIsOpen)
         {
             if(!hasTower)
                 GetComponent<SpriteRenderer>().color = CurrColor;
@@ -29,13 +31,25 @@ public class CellScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (FindObjectOfType<ShopScript>() == null && !FindObjectOfType<LevelManagerScript>().GameIsPaused)
+        if (FindObjectOfType<ShopScript>() == null 
+            && !FindObjectOfType<LevelManagerScript>().GameIsPaused 
+            && !FindObjectOfType<LevelManagerScript>().DestroyIsOpen)
         {
             if (!hasTower)
             {
                 GameObject shopObject = Instantiate(ShopPref);
                 shopObject.transform.SetParent(GameObject.Find("Canvas").transform, false);
                 shopObject.GetComponent<ShopScript>().selfCell = this;
+            }
+            else
+            {
+                FindObjectOfType<LevelManagerScript>().DestroyIsOpen = true;
+                GameObject destroyTowerObject = Instantiate(DestroyTowerPref);
+                destroyTowerObject.transform.SetParent(GameObject.Find("Canvas").transform, false);
+                destroyTowerObject.transform.position = new Vector3(
+                    gameObject.transform.position.x + TowerPref.GetComponent<SpriteRenderer>().bounds.size.x/2, 
+                    gameObject.transform.position.y + 0.3f, 
+                    gameObject.transform.position.z);
             }
         }
     }
@@ -51,5 +65,18 @@ public class CellScript : MonoBehaviour
 
         hasTower = true;
         FindObjectOfType<ShopScript>().CloseShop();
+    }
+
+    public void DestroyTower()
+    {
+        FindObjectOfType<LevelManagerScript>().GameMoney += FindObjectOfType<TowerScript>().selfTower.Price / 2;
+        FindObjectOfType<TowerScript>().selfTower.health = 0;
+        CancelDestroying();
+    }
+
+    public void CancelDestroying()
+    {
+        FindObjectOfType<LevelManagerScript>().DestroyIsOpen = false;
+        Destroy(GameObject.Find("DestroyTowerPanel(Clone)"));
     }
 }

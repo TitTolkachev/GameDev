@@ -102,7 +102,8 @@ public class TowerScript : MonoBehaviour
         {
             float currDistance = Vector2.Distance(transform.position, enemy.transform.position);
 
-            if(currDistance <= selfTower.range && currDistance < nearestEnemyDistance)
+            if(currDistance <= selfTower.range && currDistance < nearestEnemyDistance 
+                && enemy.GetComponent<EnemyScript>().IsAlive)
             {
                 nearestEnemy = enemy.transform;
                 nearestEnemyDistance = currDistance;
