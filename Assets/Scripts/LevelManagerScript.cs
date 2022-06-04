@@ -42,24 +42,29 @@ public class LevelManagerScript : MonoBehaviour
 
     void Update()
     {
-        //Вызов меню
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (spawnedEnemies < totalEnemies || enemiesOnScreen > 0)
         {
-            if (GameIsPaused)
-                Resume();
-            else
-                Pause();
-        }
+            //Вызов меню
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (GameIsPaused)
+                    Resume();
+                else
+                    Pause();
+            }
 
-        //Конец игры
-        if (health <= 0)
-        {
-            ToLobbyButton();
-        }
+            //Конец игры
+            if (health <= 0)
+            {
+                ToLobbyButton();
+            }
 
-        //Перерасчет жизней и денег
-        HealthText.text = "Health: " + health.ToString();
-        MoneyText.text = GameMoney.ToString();
+            //Перерасчет жизней и денег
+            HealthText.text = "Health: " + health.ToString();
+            MoneyText.text = GameMoney.ToString();
+        }
+        else if (health > 0)
+            StartCoroutine(Win());
     }
 
 
@@ -151,5 +156,12 @@ public class LevelManagerScript : MonoBehaviour
         PauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
+    }
+
+    private IEnumerator Win()
+    {
+        yield return new WaitForSeconds(3);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(0);
     }
 }

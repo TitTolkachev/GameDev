@@ -66,6 +66,12 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+    private IEnumerator ToDamage(Collider2D collision, float time)
+    {
+        yield return new WaitForSeconds(time);
+        collision.GetComponentInChildren<TowerScript>().TakeDamage(10);
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.tag == "Cell" && collision.GetComponent<CellScript>().hasTower)
@@ -74,7 +80,8 @@ public class EnemyScript : MonoBehaviour
             if (CoolDown <= 0)
             {
                 CoolDown = 4;
-                collision.GetComponentInChildren<TowerScript>().TakeDamage(10);
+                StartCoroutine(ToDamage(collision, 0.4f));
+                anim.SetTrigger("attack");
             }
         }
         List<Collider2D> colliders = new List<Collider2D>();
