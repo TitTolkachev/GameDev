@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-    int health = 30;
-    int speed = 1;
+    public int health = 30;
+    public int speed = 1;
 
-    public float CoolDown = 2;
+    public float CoolDown;
+    public float FirstCoolDownToAttack = 0.5f;
+    public float DefaultCoolDownToAttack = 2;
 
     bool IsAttacking = false;
     public bool IsAlive = true;
@@ -47,7 +49,7 @@ public class EnemyScript : MonoBehaviour
 
     void Move()
     {
-        Vector3 dir = new Vector3(-1, 0, 0);
+        Vector3 dir = new(-1, 0, 0);
         transform.Translate(speed * Time.deltaTime * dir.normalized);
 
         if (Mathf.Abs(FindObjectOfType<LevelManagerScript>().finishPoint.transform.position.x - transform.position.x) < 0.2f)
@@ -60,9 +62,10 @@ public class EnemyScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Cell" && collision.GetComponent<CellScript>().hasTower)
+        if (collision.CompareTag("Cell") && collision.GetComponent<CellScript>().hasTower)
         {
             IsAttacking = true;
+            CoolDown = FirstCoolDownToAttack;
         }
     }
 
@@ -74,23 +77,24 @@ public class EnemyScript : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Cell" && collision.GetComponent<CellScript>().hasTower)
+        if (collision.CompareTag("Cell") && collision.GetComponent<CellScript>().hasTower && IsAlive)
         {
+            IsAttacking = true;
             CoolDown -= Time.deltaTime;
             if (CoolDown <= 0)
             {
-                CoolDown = 4;
-                StartCoroutine(ToDamage(collision, 0.4f));
+                CoolDown = DefaultCoolDownToAttack;
                 anim.SetTrigger("attack");
+                StartCoroutine(ToDamage(collision, 0.4f));
             }
         }
-        List<Collider2D> colliders = new List<Collider2D>();
+        List<Collider2D> colliders = new();
         this.GetComponent<Collider2D>().GetContacts(colliders);
 
         bool flag = true;
         foreach (Collider2D coll in colliders)
         {
-            if (coll.tag == "Cell" && coll.GetComponent<CellScript>().hasTower)
+            if (coll.CompareTag("Cell") && coll.GetComponent<CellScript>().hasTower)
                 flag = false;
         }
         if (flag)

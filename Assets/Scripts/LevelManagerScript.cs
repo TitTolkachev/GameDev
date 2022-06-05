@@ -23,10 +23,11 @@ public class LevelManagerScript : MonoBehaviour
     public int fieldWidth, fieldHeight;
     public float paddingX, paddingY;
 
-    int right = 8, up = 4;
+    int right = 16, up = 4;
 
     public bool GameIsPaused = false;
     public bool DestroyIsOpen = false;
+    public TowerScript destroyingTower;
 
     public GameObject PauseMenuUI;
 
@@ -109,12 +110,18 @@ public class LevelManagerScript : MonoBehaviour
 
     void CreateLevel()
     {
+        //Правая половина
         for (int i = 0; i < fieldHeight; i++)
             for (int j = 0; j < fieldWidth; j++)
-                CreateCell(j, i);
+                CreateCell(j, i, "right");
+
+        //Левая половина
+        for (int i = 0; i < fieldHeight; i++)
+            for (int j = 0; j < fieldWidth; j++)
+                CreateCell(j, i, "left");
     }
 
-    void CreateCell(int x, int y)
+    void CreateCell(int x, int y, string type)
     {
         GameObject tmpCell = Instantiate(cellPref);
 
@@ -123,14 +130,28 @@ public class LevelManagerScript : MonoBehaviour
         float sprSizeX = tmpCell.GetComponent<SpriteRenderer>().bounds.size.x;
         float sprSizeY = tmpCell.GetComponent<SpriteRenderer>().bounds.size.y;
 
-        if (x == 0 && y == 0)
-            tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY, 0);
-        else if (y == 0)
-            tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY, 0);
-        else if (x == 0)
-            tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
-        else
-            tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+        if(type == "right")
+        {
+            if (x == 0 && y == 0)
+                tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY, 0);
+            else if (y == 0)
+                tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY, 0);
+            else if (x == 0)
+                tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+            else
+                tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+        }
+        else if(type == "left")
+        {
+            if (x == 0 && y == 0)
+                tmpCell.transform.position = new Vector3(-right-1 + paddingX, up - paddingY, 0);
+            else if (y == 0)
+                tmpCell.transform.position = new Vector3(-right-1  + paddingX + 2 * paddingX * x + sprSizeX * x, up - paddingY, 0);
+            else if (x == 0)
+                tmpCell.transform.position = new Vector3(-right-1 + paddingX, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+            else
+                tmpCell.transform.position = new Vector3(-right-1 + paddingX + 2 * paddingX * x + sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+        }
     }
 
 
@@ -160,6 +181,7 @@ public class LevelManagerScript : MonoBehaviour
 
     private IEnumerator Win()
     {
+        health = 0;
         yield return new WaitForSeconds(3);
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);

@@ -13,11 +13,11 @@ public class CellScript : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (FindObjectOfType<ShopScript>() == null 
-            && !FindObjectOfType<LevelManagerScript>().GameIsPaused 
+        if (FindObjectOfType<ShopScript>() == null
+            && !FindObjectOfType<LevelManagerScript>().GameIsPaused
             && !FindObjectOfType<LevelManagerScript>().DestroyIsOpen)
         {
-            if(!hasTower)
+            if (!hasTower)
                 GetComponent<SpriteRenderer>().color = CurrColor;
             else
                 GetComponent<SpriteRenderer>().color = DestroyColor;
@@ -31,8 +31,8 @@ public class CellScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (FindObjectOfType<ShopScript>() == null 
-            && !FindObjectOfType<LevelManagerScript>().GameIsPaused 
+        if (FindObjectOfType<ShopScript>() == null
+            && !FindObjectOfType<LevelManagerScript>().GameIsPaused
             && !FindObjectOfType<LevelManagerScript>().DestroyIsOpen)
         {
             if (!hasTower)
@@ -43,12 +43,13 @@ public class CellScript : MonoBehaviour
             }
             else
             {
+                FindObjectOfType<LevelManagerScript>().destroyingTower = GetComponentInChildren<TowerScript>();
                 FindObjectOfType<LevelManagerScript>().DestroyIsOpen = true;
                 GameObject destroyTowerObject = Instantiate(DestroyTowerPref);
                 destroyTowerObject.transform.SetParent(GameObject.Find("Canvas").transform, false);
                 destroyTowerObject.transform.position = new Vector3(
-                    gameObject.transform.position.x + TowerPref.GetComponent<SpriteRenderer>().bounds.size.x/2, 
-                    gameObject.transform.position.y + 0.3f, 
+                    gameObject.transform.position.x + TowerPref.GetComponent<SpriteRenderer>().bounds.size.x / 2,
+                    gameObject.transform.position.y + 0.3f,
                     gameObject.transform.position.z);
             }
         }
@@ -70,7 +71,7 @@ public class CellScript : MonoBehaviour
     public void DestroyTower()
     {
         FindObjectOfType<LevelManagerScript>().GameMoney += FindObjectOfType<TowerScript>().selfTower.Price / 2;
-        FindObjectOfType<TowerScript>().selfTower.health = 0;
+        FindObjectOfType<LevelManagerScript>().destroyingTower.selfTower.health = 0;
         CancelDestroying();
     }
 
