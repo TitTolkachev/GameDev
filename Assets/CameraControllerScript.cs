@@ -10,7 +10,20 @@ public class CameraControllerScript : MonoBehaviour
     private float zoomFactor = 3;
     [SerializeField] private float zoomSpeed = 300;
 
+    [SerializeField]
+    public SpriteRenderer mapRenderer;
+
     private Vector3 dragOrigin;
+
+    float mapMinX = -30, mapMaxX = 30, mapMinY = -15, mapMaxY = 15;
+
+    //private void Awake()
+    //{
+    //    mapMinX = mapRenderer.transform.position.x - mapRenderer.bounds.size.x / 2f;
+    //    mapMinY = mapRenderer.transform.position.y - mapRenderer.bounds.size.y / 2f;
+    //    mapMaxX = mapRenderer.transform.position.x + mapRenderer.bounds.size.x / 2f;
+    //    mapMaxY = mapRenderer.transform.position.x + mapRenderer.bounds.size.y / 2f;
+    //}
 
     void Start()
     {
@@ -20,27 +33,17 @@ public class CameraControllerScript : MonoBehaviour
 
     void Update()
     {
-        float scrollData = Input.GetAxis("Mouse ScrollWheel");
+        if(/*!FindObjectOfType<LevelManagerScript>().DestroyIsOpen && */!FindObjectOfType<LevelManagerScript>().GameIsPaused)
+        {
+            float scrollData = Input.GetAxis("Mouse ScrollWheel");
 
-        //if(scrollData != 0)
-        //{
             targetZoom -= scrollData * zoomFactor;
             float yVelocity = 0.0f;
             targetZoom = Mathf.Clamp(targetZoom, 2f, 12f);
             cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, targetZoom, ref yVelocity, Time.deltaTime * zoomSpeed);
-
-        //if(scrollData > 0)
-        //    cam.transform.position = new Vector3((cam.transform.position.x + cam.ScreenToWorldPoint(Input.mousePosition).x) / 2,
-        //    (cam.transform.position.y + cam.ScreenToWorldPoint(Input.mousePosition).y) / 2,
-        //    cam.transform.position.z);
-        //else
-        //    cam.transform.position = new Vector3((cam.transform.position.x - cam.ScreenToWorldPoint(Input.mousePosition).x) / 2,
-        //    (cam.transform.position.y - cam.ScreenToWorldPoint(Input.mousePosition).y) / 2,
-        //    cam.transform.position.z);
-        //}
-
-        //Движение по WASD камеры
-        PanCamera();
+            cam.transform.position = ClampCamera(cam.transform.position);
+            PanCamera();
+        }
     }
 
     void PanCamera()
@@ -53,7 +56,26 @@ public class CameraControllerScript : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             Vector3 difference = dragOrigin - cam.ScreenToWorldPoint(Input.mousePosition);
-            cam.transform.position += difference;
+
+            cam.transform.position = ClampCamera(cam.transform.position + difference);
         }
+    }
+
+    private Vector3 ClampCamera(Vector3 targetPosition)
+    {
+        float camHeight = cam.orthographicSize;
+        float camWidth = cam.orthographicSize * cam.aspect;
+
+
+        float minX = mapMinX + camWidth;
+        float maxX = mapMaxX - camWidth;
+        float minY = mapMinY + camHeight;
+        float maxY = mapMaxY - camHeight;
+
+
+        float newX = Mathf.Clamp(targetPosition.x, minX, maxX);
+        float newY = Mathf.Clamp(targetPosition.y, minY, maxY);
+
+        return new Vector3(newX, newY, targetPosition.z);
     }
 }

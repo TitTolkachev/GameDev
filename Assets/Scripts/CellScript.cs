@@ -46,7 +46,7 @@ public class CellScript : MonoBehaviour
                 FindObjectOfType<LevelManagerScript>().destroyingTower = GetComponentInChildren<TowerScript>();
                 FindObjectOfType<LevelManagerScript>().DestroyIsOpen = true;
                 GameObject destroyTowerObject = Instantiate(DestroyTowerPref);
-                destroyTowerObject.transform.SetParent(GameObject.Find("Canvas").transform, false);
+                destroyTowerObject.transform.SetParent(GameObject.Find("CanvasForDestroyPanel").transform, false);
                 destroyTowerObject.transform.position = new Vector3(
                     gameObject.transform.position.x + TowerPref.GetComponent<SpriteRenderer>().bounds.size.x / 2,
                     gameObject.transform.position.y + 0.3f,
