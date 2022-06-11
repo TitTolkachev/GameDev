@@ -7,11 +7,13 @@ using UnityEngine.UI;
 public class LevelManagerScript : MonoBehaviour
 {
 
-    public GameObject spawnPoint;
+    public GameObject spawnPointRight;
+    public GameObject spawnPointLeft;
     public GameObject finishPoint;
     public GameObject[] enemies;
     public Text HealthText;
     public Text MoneyText;
+    public int levelType;//1 - с двух сторон, 2 - только справа
     public int health = 5;//Жизни
     public int GameMoney;//Деньги
     public int totalEnemies;//Врагов в уровне
@@ -90,15 +92,40 @@ public class LevelManagerScript : MonoBehaviour
 
         if (it < enemiesPerSpawn)
         {
+            if(levelType == 1)//с двух сторон
+            {
+                int enemyType = Random.Range(1, 3);
 
-            GameObject newEnemy = Instantiate(enemies[0]);
+                GameObject newEnemy = Instantiate(enemies[Random.Range(0, enemies.Length)]);
 
-            int rnd = Random.Range(-4, 4);
+                int rnd = Random.Range(-4, 4);
 
-            //При помощи z-index делаю правильное наложение врагов друг на друга
-            newEnemy.transform.position = new Vector3(spawnPoint.transform.position.x, rnd - 0.4f + 1, rnd + 4);
-            enemiesOnScreen += 1;
-            spawnedEnemies += 1;
+                //При помощи z-index делаю правильное наложение врагов друг на друга
+                if(enemyType == 1)//правый
+                    newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, rnd - 0.4f + 1, rnd + 4);
+                if (enemyType == 2)//левый
+                {
+                    newEnemy.transform.position = new Vector3(spawnPointLeft.transform.position.x, rnd - 0.4f + 1, rnd + 4);
+                    newEnemy.GetComponent<SpriteRenderer>().flipX = true;
+                }
+
+                newEnemy.GetComponentInChildren<EnemyScript>().enemyOrientationType = enemyType;
+
+                enemiesOnScreen += 1;
+                spawnedEnemies += 1;
+            }
+            else if(levelType == 2)
+            {
+                GameObject newEnemy = Instantiate(enemies[Random.Range(0, enemies.Length)]);
+
+                int rnd = Random.Range(-4, 4);
+
+                //При помощи z-index делаю правильное наложение врагов друг на друга
+                newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, rnd - 0.4f + 1, rnd + 4);
+                newEnemy.GetComponentInChildren<EnemyScript>().enemyOrientationType = 1;
+                enemiesOnScreen += 1;
+                spawnedEnemies += 1;
+            }
 
             StartCoroutine(SpawnExtra(it + 1));
         }
@@ -116,9 +143,10 @@ public class LevelManagerScript : MonoBehaviour
                 CreateCell(j, i, "right");
 
         //Левая половина
-        for (int i = 0; i < fieldHeight; i++)
-            for (int j = 0; j < fieldWidth; j++)
-                CreateCell(j, i, "left");
+        if (levelType == 1)
+            for (int i = 0; i < fieldHeight; i++)
+                for (int j = 0; j < fieldWidth; j++)
+                    CreateCell(j, i, "left");
     }
 
     void CreateCell(int x, int y, string type)

@@ -15,7 +15,8 @@ public class CameraControllerScript : MonoBehaviour
 
     private Vector3 dragOrigin;
 
-    float mapMinX = -30, mapMaxX = 30, mapMinY = -15, mapMaxY = 15;
+    public float mapMinX = -30, mapMaxX = 30, mapMinY = -15, mapMaxY = 15;
+    public float zoomMin = 2f, zoomMax = 12f;
 
     //private void Awake()
     //{
@@ -39,7 +40,7 @@ public class CameraControllerScript : MonoBehaviour
 
             targetZoom -= scrollData * zoomFactor;
             float yVelocity = 0.0f;
-            targetZoom = Mathf.Clamp(targetZoom, 2f, 12f);
+            targetZoom = Mathf.Clamp(targetZoom, zoomMin, zoomMax);
             cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, targetZoom, ref yVelocity, Time.deltaTime * zoomSpeed);
             cam.transform.position = ClampCamera(cam.transform.position);
             PanCamera();

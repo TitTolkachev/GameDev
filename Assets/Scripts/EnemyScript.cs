@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
+    public int enemyOrientationType;//1 - правый, 2 - левый
     public int health = 30;
     public int speed = 1;
 
@@ -49,15 +50,13 @@ public class EnemyScript : MonoBehaviour
 
     void Move()
     {
-        Vector3 dir = new(-1, 0, 0);
-        transform.Translate(speed * Time.deltaTime * dir.normalized);
+        Vector3 dir;
+        if (enemyOrientationType == 1)
+            dir = new(-1, 0, 0);
+        else 
+            dir = new(1, 0, 0);
 
-        if (Mathf.Abs(FindObjectOfType<LevelManagerScript>().finishPoint.transform.position.x - transform.position.x) < 0.2f)
-        {
-            FindObjectOfType<LevelManagerScript>().enemiesOnScreen -= 1;
-            FindObjectOfType<LevelManagerScript>().health -= 1;
-            Destroy(gameObject);
-        }
+        transform.Translate(speed * Time.deltaTime * dir.normalized);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -66,6 +65,12 @@ public class EnemyScript : MonoBehaviour
         {
             IsAttacking = true;
             CoolDown = FirstCoolDownToAttack;
+        }
+        if(collision.CompareTag("Finish"))
+        {
+            FindObjectOfType<LevelManagerScript>().enemiesOnScreen -= 1;
+            FindObjectOfType<LevelManagerScript>().health -= 1;
+            Destroy(gameObject);
         }
     }
 
