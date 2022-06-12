@@ -9259,6 +9259,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoomSpeed: 10
   mapRenderer: {fileID: 0}
+  mapMinX: -30
+  mapMaxX: 30
+  mapMinY: -15
+  mapMaxY: 15
+  zoomMin: 2
+  zoomMax: 12
 --- !u!1001 &519543110
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18164,6 +18170,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 2726496256030630735, guid: 3ded794b7be544849bc4ab105bab908a, type: 3}
   - {fileID: 1015298495759069992, guid: ca34842dcafa2724890398abb12b193f, type: 3}
+  - {fileID: 6127772269458341323, guid: 0c86bc16dd3c38344a5ea9af6344fce9, type: 3}
   HealthText: {fileID: 1221121267}
   MoneyText: {fileID: 920158593}
   levelType: 1

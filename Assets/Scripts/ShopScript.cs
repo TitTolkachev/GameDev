@@ -15,8 +15,9 @@ public class ShopScript : MonoBehaviour
     void Start()
     {
 
-        AllTowers.Add(new Tower("Tower_1", 0, 2, .3f, 50, "TowerSprites/FTower"));
-        AllTowers.Add(new Tower("Tower_2", 1, 5, 1, 70, "TowerSprites/STower"));
+        AllTowers.Add(new Tower(1, "Tower_1", 0, 2, .3f, 50, "TowerSprites/FTower"));
+        AllTowers.Add(new Tower(1, "Tower_2", 1, 5, 1, 70, "TowerSprites/STower"));
+        AllTowers.Add(new Tower(2, "Archer", 2, 7, 1, 50, "TowerSprites/ArcherTower"));
 
         foreach (Tower tower in AllTowers)
         {

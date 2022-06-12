@@ -6,7 +6,7 @@ public class EnemyScript : MonoBehaviour
 {
     public int enemyOrientationType;//1 - правый, 2 - левый
     public int health = 30;
-    public int speed = 1;
+    public float speed = 1;
 
     public float CoolDown;
     public float FirstCoolDownToAttack = 0.5f;

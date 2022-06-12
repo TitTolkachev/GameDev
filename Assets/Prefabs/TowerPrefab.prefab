@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6443141169346290813}
   - component: {fileID: 6443141169346290802}
   - component: {fileID: 3844590788475701805}
+  - component: {fileID: 2708760173712665435}
   m_Layer: 8
   m_Name: TowerPrefab
   m_TagString: Tower
@@ -99,3 +100,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 3822774697120451274, guid: 3950eac29e6aa6147bb622be41c03239, type: 3}
   selfType: 0
+--- !u!95 &2708760173712665435
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6443141169346290803}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
