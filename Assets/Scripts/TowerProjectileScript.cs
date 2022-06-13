@@ -7,12 +7,13 @@ public class TowerProjectileScript : MonoBehaviour
     Transform target;
     public TowerProjectile selfProjectile;
     public int projectileRange;
-    public int orientation = 1; //1 - летит вправо, 2 - влево
+    public int orientation = 1; //1 - летит вправо, -1 - влево
     private float distance = 0;
 
     private void Start()
     {
         GetComponent<SpriteRenderer>().sprite = selfProjectile.Spr;
+        GetComponent<SpriteRenderer>().flipX = orientation == -1;
     }
 
     void Update()

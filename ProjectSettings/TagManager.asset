@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Tower
   - Cell
+  - HitBox
   layers:
   - Default
   - TransparentFX

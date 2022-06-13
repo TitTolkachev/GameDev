@@ -25,7 +25,7 @@ public class LevelManagerScript : MonoBehaviour
     public int fieldWidth, fieldHeight;
     public float paddingX, paddingY;
 
-    int right = 16, up = 4;
+    public int right = 16, up = 4;
 
     public bool GameIsPaused = false;
     public bool DestroyIsOpen = false;
@@ -98,14 +98,14 @@ public class LevelManagerScript : MonoBehaviour
 
                 GameObject newEnemy = Instantiate(enemies[Random.Range(0, enemies.Length)]);
 
-                int rnd = Random.Range(-4, 4);
+                int rnd = Random.Range(-up, up);
 
                 //При помощи z-index делаю правильное наложение врагов друг на друга
                 if(enemyType == 1)//правый
-                    newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, rnd - 0.4f + 1, rnd + 4);
+                    newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, rnd - 0.4f + 1, rnd + up);
                 if (enemyType == 2)//левый
                 {
-                    newEnemy.transform.position = new Vector3(spawnPointLeft.transform.position.x, rnd - 0.4f + 1, rnd + 4);
+                    newEnemy.transform.position = new Vector3(spawnPointLeft.transform.position.x, rnd - 0.4f + 1, rnd + up);
                     newEnemy.GetComponent<SpriteRenderer>().flipX = true;
                 }
 
@@ -118,10 +118,10 @@ public class LevelManagerScript : MonoBehaviour
             {
                 GameObject newEnemy = Instantiate(enemies[Random.Range(0, enemies.Length)]);
 
-                int rnd = Random.Range(-4, 4);
+                int rnd = Random.Range(-up, up);
 
                 //При помощи z-index делаю правильное наложение врагов друг на друга
-                newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, rnd - 0.4f + 1, rnd + 4);
+                newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, rnd - 0.4f + 1, rnd + up);
                 newEnemy.GetComponentInChildren<EnemyScript>().enemyOrientationType = 1;
                 enemiesOnScreen += 1;
                 spawnedEnemies += 1;

@@ -66,7 +66,11 @@ public class EnemyScript : MonoBehaviour
             IsAttacking = true;
             CoolDown = FirstCoolDownToAttack;
         }
-        if(collision.CompareTag("Finish"))
+        if (collision.CompareTag("HitBox"))
+        {
+            TakeDamage(FindObjectOfType<PlayerControllerScript>().power);
+        }
+        if (collision.CompareTag("Finish"))
         {
             FindObjectOfType<LevelManagerScript>().enemiesOnScreen -= 1;
             FindObjectOfType<LevelManagerScript>().health -= 1;

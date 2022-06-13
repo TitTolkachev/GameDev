@@ -70,7 +70,7 @@ public class TowerScript : MonoBehaviour
 
         AllProjectiles.Add(new TowerProjectile(1, 7, 2, "ProjectilesSprites/FProjectile"));
         AllProjectiles.Add(new TowerProjectile(1, 3, 10, "ProjectilesSprites/SProjectile"));
-        AllProjectiles.Add(new TowerProjectile(2, 4, 10, "ProjectilesSprites/FProjectile"));
+        AllProjectiles.Add(new TowerProjectile(2, 4, 10, "ProjectilesSprites/ArcherProjectile"));
 
         selfTower = AllTowers[(int)selfType];
 
@@ -141,7 +141,7 @@ public class TowerScript : MonoBehaviour
     {
         selfTower.CurrCooldown = selfTower.Cooldown;
         anim.SetTrigger("attack");
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0f);
 
         GameObject proj = Instantiate(projectile);
         proj.GetComponent<TowerProjectileScript>().selfProjectile = AllProjectiles[(int)selfType];
@@ -155,7 +155,7 @@ public class TowerScript : MonoBehaviour
     {
         selfTower.CurrCooldown = selfTower.Cooldown;
         anim.SetTrigger("attack");
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.25f);
 
         GameObject proj = Instantiate(projectile);
         proj.GetComponent<TowerProjectileScript>().selfProjectile = AllProjectiles[(int)selfType];
@@ -176,7 +176,7 @@ public class TowerScript : MonoBehaviour
     IEnumerator Die()
     {
         anim.SetBool("isAlive", false);
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(0.5f);
         gameObject.GetComponentInParent<CellScript>().hasTower = false;
         Destroy(gameObject);
     }
