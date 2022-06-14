@@ -25,7 +25,7 @@ public class LevelManagerScript : MonoBehaviour
     public int fieldWidth, fieldHeight;
     public float paddingX, paddingY;
 
-    public int right = 16, up = 4;
+    public float right = 16, up = 4;
 
     public bool GameIsPaused = false;
     public bool DestroyIsOpen = false;
@@ -35,10 +35,13 @@ public class LevelManagerScript : MonoBehaviour
 
     public GameObject cellPref;
 
+    public GameObject nextLevelPortal;
+
     public Transform cellParent;
 
     void Start()
     {
+        nextLevelPortal.SetActive(false);
         CreateLevel();
         StartCoroutine(Spawn());
     }
@@ -92,20 +95,22 @@ public class LevelManagerScript : MonoBehaviour
 
         if (it < enemiesPerSpawn)
         {
-            if(levelType == 1)//с двух сторон
+            float sprSizeY = cellPref.GetComponent<SpriteRenderer>().bounds.size.y;
+
+            if (levelType == 1)//с двух сторон
             {
                 int enemyType = Random.Range(1, 3);
 
                 GameObject newEnemy = Instantiate(enemies[Random.Range(0, enemies.Length)]);
 
-                int rnd = Random.Range(-up, up);
+                int rnd = Random.Range(0, fieldHeight);
 
                 //При помощи z-index делаю правильное наложение врагов друг на друга
-                if(enemyType == 1)//правый
-                    newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, rnd - 0.4f + 1, rnd + up);
+                if (enemyType == 1)//правый
+                    newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, up - paddingY - sprSizeY/2 - 2 * paddingY * rnd - sprSizeY * rnd, rnd);
                 if (enemyType == 2)//левый
                 {
-                    newEnemy.transform.position = new Vector3(spawnPointLeft.transform.position.x, rnd - 0.4f + 1, rnd + up);
+                    newEnemy.transform.position = new Vector3(spawnPointLeft.transform.position.x, up - paddingY - sprSizeY/2 - 2 * paddingY * rnd - sprSizeY * rnd, rnd);
                     newEnemy.GetComponent<SpriteRenderer>().flipX = true;
                 }
 
@@ -114,14 +119,14 @@ public class LevelManagerScript : MonoBehaviour
                 enemiesOnScreen += 1;
                 spawnedEnemies += 1;
             }
-            else if(levelType == 2)
+            else if (levelType == 2)
             {
                 GameObject newEnemy = Instantiate(enemies[Random.Range(0, enemies.Length)]);
 
-                int rnd = Random.Range(-up, up);
+                int rnd = Random.Range(0, fieldHeight);
 
                 //При помощи z-index делаю правильное наложение врагов друг на друга
-                newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, rnd - 0.4f + 1, rnd + up);
+                newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, up - paddingY - sprSizeY/2 - 2 * paddingY * rnd - sprSizeY * rnd, rnd);
                 newEnemy.GetComponentInChildren<EnemyScript>().enemyOrientationType = 1;
                 enemiesOnScreen += 1;
                 spawnedEnemies += 1;
@@ -158,7 +163,7 @@ public class LevelManagerScript : MonoBehaviour
         float sprSizeX = tmpCell.GetComponent<SpriteRenderer>().bounds.size.x;
         float sprSizeY = tmpCell.GetComponent<SpriteRenderer>().bounds.size.y;
 
-        if(type == "right")
+        if (type == "right")
         {
             if (x == 0 && y == 0)
                 tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY, 0);
@@ -169,16 +174,16 @@ public class LevelManagerScript : MonoBehaviour
             else
                 tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
         }
-        else if(type == "left")
+        else if (type == "left")
         {
             if (x == 0 && y == 0)
-                tmpCell.transform.position = new Vector3(-right-1 + paddingX, up - paddingY, 0);
+                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX, up - paddingY, 0);
             else if (y == 0)
-                tmpCell.transform.position = new Vector3(-right-1  + paddingX + 2 * paddingX * x + sprSizeX * x, up - paddingY, 0);
+                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX + 2 * paddingX * x + sprSizeX * x, up - paddingY, 0);
             else if (x == 0)
-                tmpCell.transform.position = new Vector3(-right-1 + paddingX, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
             else
-                tmpCell.transform.position = new Vector3(-right-1 + paddingX + 2 * paddingX * x + sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX + 2 * paddingX * x + sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
         }
     }
 
@@ -210,8 +215,8 @@ public class LevelManagerScript : MonoBehaviour
     private IEnumerator Win()
     {
         health = 0;
-        yield return new WaitForSeconds(3);
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(0);
+        yield return new WaitForSeconds(2);
+
+        nextLevelPortal.SetActive(true);
     }
 }

@@ -16,6 +16,11 @@ public class LevelsMenuScript : MonoBehaviour
         SceneManager.LoadScene(3);
     }
 
+    public void StartLevel3()
+    {
+        SceneManager.LoadScene(4);
+    }
+
     public void ExitButton()
     {
         SceneManager.LoadScene(0);
