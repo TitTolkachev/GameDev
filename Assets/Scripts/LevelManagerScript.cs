@@ -20,7 +20,7 @@ public class LevelManagerScript : MonoBehaviour
     public int enemiesPerSpawn;//Врагов в новой волне
     public int enemiesOnScreen = 0;//Врагов на экране
     public int spawnedEnemies = 0;//Заспавнилось в уровне
-    public float spawnDelay = 2;//Задержка между вонами
+    public float spawnDelay = 2;//Задержка между волнами
 
     public int fieldWidth, fieldHeight;
     public float paddingX, paddingY;
@@ -195,7 +195,7 @@ public class LevelManagerScript : MonoBehaviour
     public void ToLobbyButton()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     public void Resume()
@@ -214,6 +214,8 @@ public class LevelManagerScript : MonoBehaviour
 
     private IEnumerator Win()
     {
+        if (PlayerPrefs.GetInt("LevelComplete") < SceneManager.GetActiveScene().buildIndex - 1)
+            PlayerPrefs.SetInt("LevelComplete", SceneManager.GetActiveScene().buildIndex - 1);
         health = 0;
         yield return new WaitForSeconds(2);
 

@@ -15,6 +15,8 @@ public class CameraControllerScript : MonoBehaviour
 
     private Vector3 dragOrigin;
 
+    public bool menuMode = false;
+
     public float mapMinX = -30, mapMaxX = 30, mapMinY = -15, mapMaxY = 15;
     public float zoomMin = 2f, zoomMax = 12f;
 
@@ -34,7 +36,7 @@ public class CameraControllerScript : MonoBehaviour
 
     void Update()
     {
-        if(/*!FindObjectOfType<LevelManagerScript>().DestroyIsOpen && */!FindObjectOfType<LevelManagerScript>().GameIsPaused)
+        if(/*!FindObjectOfType<LevelManagerScript>().DestroyIsOpen && */menuMode || !FindObjectOfType<LevelManagerScript>().GameIsPaused)
         {
             float scrollData = Input.GetAxis("Mouse ScrollWheel");
 

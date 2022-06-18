@@ -24,6 +24,9 @@ public class NextLevelPortalScript : MonoBehaviour
         animator.SetTrigger("Close");
         yield return new WaitForSeconds(1.2f);
 
-        SceneManager.LoadScene(0);
+        if (SceneManager.GetActiveScene().buildIndex + 1 < 5)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        else
+            SceneManager.LoadScene(1);
     }
 }

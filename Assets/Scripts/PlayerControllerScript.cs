@@ -14,6 +14,8 @@ public class PlayerControllerScript : MonoBehaviour
 
     public int power;
 
+    public float left, right, up, down;
+
     [SerializeField]
     GameObject attackHitBox;
 
@@ -26,10 +28,6 @@ public class PlayerControllerScript : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
 
         attackHitBox.SetActive(false);
-    }
-
-    private void Update()
-    {
     }
 
     IEnumerator attack1()
@@ -54,27 +52,50 @@ public class PlayerControllerScript : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.D))
             {
-                transform.position = new Vector3(transform.position.x + speed * Time.deltaTime, transform.position.y, transform.position.z);
+                Vector3 vect = new(transform.position.x + speed * Time.deltaTime, transform.position.y, transform.position.z);
+                vect.x = Mathf.Min(vect.x, right);
+                vect.x = Mathf.Max(vect.x, left);
+                vect.y = Mathf.Min(vect.y, up);
+                vect.y = Mathf.Max(vect.y, down);
+                transform.position = vect;
                 if(!isAttacking)
                     animator.Play("Run");
                 transform.localScale = new Vector3(1, 1, 1);
             }
             if (Input.GetKey(KeyCode.A))
             {
-                transform.position = new Vector3(transform.position.x - speed * Time.deltaTime, transform.position.y, transform.position.z);
+                Vector3 vect = new(transform.position.x - speed * Time.deltaTime, transform.position.y, transform.position.z);
+                vect.x = Mathf.Min(vect.x, right);
+                vect.x = Mathf.Max(vect.x, left);
+                vect.y = Mathf.Min(vect.y, up);
+                vect.y = Mathf.Max(vect.y, down);
+                transform.position = vect;
+
                 if (!isAttacking)
                     animator.Play("Run");
                 transform.localScale = new Vector3(-1, 1, 1);
             }
             if (Input.GetKey(KeyCode.W))
             {
-                transform.position = new Vector3(transform.position.x, transform.position.y + speed * Time.deltaTime, transform.position.z);
+                Vector3 vect = new(transform.position.x, transform.position.y + speed * Time.deltaTime, transform.position.z);
+                vect.x = Mathf.Min(vect.x, right);
+                vect.x = Mathf.Max(vect.x, left);
+                vect.y = Mathf.Min(vect.y, up);
+                vect.y = Mathf.Max(vect.y, down);
+                transform.position = vect;
+
                 if (!isAttacking)
                     animator.Play("Run");
             }
             if (Input.GetKey(KeyCode.S))
             {
-                transform.position = new Vector3(transform.position.x, transform.position.y - speed * Time.deltaTime, transform.position.z);
+                Vector3 vect = new(transform.position.x, transform.position.y - speed * Time.deltaTime, transform.position.z);
+                vect.x = Mathf.Min(vect.x, right);
+                vect.x = Mathf.Max(vect.x, left);
+                vect.y = Mathf.Min(vect.y, up);
+                vect.y = Mathf.Max(vect.y, down);
+                transform.position = vect;
+
                 if (!isAttacking)
                     animator.Play("Run");
             }

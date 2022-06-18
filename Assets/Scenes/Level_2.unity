@@ -4487,6 +4487,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   power: 10
+  left: 0
+  right: 22
+  up: 6
+  down: -6
   attackHitBox: {fileID: 1843826275}
 --- !u!212 &405117594
 SpriteRenderer:
