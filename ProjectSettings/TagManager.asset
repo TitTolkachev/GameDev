@@ -8,6 +8,7 @@ TagManager:
   - Tower
   - Cell
   - HitBox
+  - LevelMusic
   layers:
   - Default
   - TransparentFX

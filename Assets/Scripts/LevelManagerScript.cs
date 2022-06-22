@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -39,8 +40,15 @@ public class LevelManagerScript : MonoBehaviour
 
     public Transform cellParent;
 
+    public AudioSource levelMusic;
+
     void Start()
     {
+        AudioSource[] auds = FindObjectsOfType<AudioSource>();
+        for (int i = 0; i < auds.Length; i++)
+            if (!auds[i].CompareTag("LevelMusic"))
+                Destroy(auds[i].gameObject);
+
         nextLevelPortal.SetActive(false);
         CreateLevel();
         StartCoroutine(Spawn());
@@ -205,6 +213,9 @@ public class LevelManagerScript : MonoBehaviour
         PauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
+
+        levelMusic.volume = PlayerPrefs.GetFloat("MusicVolume");
+        levelMusic.UnPause();
     }
 
     public void Pause()
@@ -212,6 +223,8 @@ public class LevelManagerScript : MonoBehaviour
         PauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
+
+        levelMusic.Pause();
     }
 
     private IEnumerator Win()
