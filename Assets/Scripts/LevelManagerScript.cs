@@ -50,27 +50,29 @@ public class LevelManagerScript : MonoBehaviour
     {
         if (spawnedEnemies < totalEnemies || enemiesOnScreen > 0)
         {
-            //Вызов меню
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (GameIsPaused)
-                    Resume();
-                else
-                    Pause();
-            }
-
             //Конец игры
             if (health <= 0)
             {
                 ToLobbyButton();
             }
 
-            //Перерасчет жизней и денег
+            //Перерасчет жизней
             HealthText.text = "Health: " + health.ToString();
-            MoneyText.text = GameMoney.ToString();
         }
         else if (health > 0)
             StartCoroutine(Win());
+
+        //Вызов меню
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameIsPaused)
+                Resume();
+            else
+                Pause();
+        }
+
+        //Перерасчет денег
+        MoneyText.text = GameMoney.ToString();
     }
 
 
