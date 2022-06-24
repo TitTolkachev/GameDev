@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.14901961}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.5529412}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -171,8 +171,8 @@ MonoBehaviour:
   TowerLogo: {fileID: 8228774459853536142}
   TowerName: {fileID: 7021984837346269441}
   TowerPrice: {fileID: 4835781706690949409}
-  BaseColor: {r: 1, g: 1, b: 1, a: 0.14901961}
-  CurrColor: {r: 0.6320754, g: 0.55157524, b: 0.55157524, a: 0.5686275}
+  BaseColor: {r: 0, g: 0, b: 0, a: 0.5529412}
+  CurrColor: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 0.5529412}
 --- !u!1 &4086648725861508189
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 24dce77be3e798f43b132c5c35068061, type: 3}
-  m_Color: {r: 0.51152545, g: 0.8962264, b: 0.53201044, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 24dce77be3e798f43b132c5c35068061, type: 3}
-  m_Color: {r: 0.50980395, g: 0.8980393, b: 0.53333336, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

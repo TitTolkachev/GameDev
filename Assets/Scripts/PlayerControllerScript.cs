@@ -34,10 +34,11 @@ public class PlayerControllerScript : MonoBehaviour
     {
         isAttacking = true;
         animator.SetTrigger("isAttacking");
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.3f);
         attackHitBox.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         attackHitBox.SetActive(false);
+        yield return new WaitForSeconds(0.4f);
         isAttacking = false;
     }
 

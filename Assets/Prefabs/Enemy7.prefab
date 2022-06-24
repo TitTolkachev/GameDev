@@ -105,7 +105,7 @@ MonoBehaviour:
   speed: 0.9
   CoolDown: 0.5
   FirstCoolDownToAttack: 0.5
-  DefaultCoolDownToAttack: 2
+  DefaultCoolDownToAttack: 1
   IsAlive: 1
 --- !u!50 &9178328672751999665
 Rigidbody2D:

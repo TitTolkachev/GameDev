@@ -33,14 +33,19 @@ public class LevelManagerScript : MonoBehaviour
     public TowerScript destroyingTower;
 
     public GameObject PauseMenuUI;
+    public GameObject Continue;
+    public GameObject Settings;
+    public GameObject Home;
+    public GameObject Back;
+    public GameObject Slider;
+
+    public Slider _slider;
 
     public GameObject cellPref;
 
     public GameObject nextLevelPortal;
 
     public Transform cellParent;
-
-    public AudioSource levelMusic;
 
     void Start()
     {
@@ -52,6 +57,12 @@ public class LevelManagerScript : MonoBehaviour
         nextLevelPortal.SetActive(false);
         CreateLevel();
         StartCoroutine(Spawn());
+
+        _slider.onValueChanged.AddListener((v) =>
+        {
+            PauseMenuUI.GetComponent<AudioSource>().volume = v;
+            PlayerPrefs.SetFloat("MusicVolume", v);
+        });
     }
 
     void Update()
@@ -121,7 +132,7 @@ public class LevelManagerScript : MonoBehaviour
                 if (enemyType == 2)//левый
                 {
                     newEnemy.transform.position = new Vector3(spawnPointLeft.transform.position.x, up - paddingY - sprSizeY/2 - 2 * paddingY * rnd - sprSizeY * rnd, rnd);
-                    newEnemy.GetComponent<SpriteRenderer>().flipX = true;
+                    newEnemy.GetComponent<SpriteRenderer>().transform.localScale = new Vector3(-1, 1, 1);
                 }
 
                 newEnemy.GetComponentInChildren<EnemyScript>().enemyOrientationType = enemyType;
@@ -214,17 +225,46 @@ public class LevelManagerScript : MonoBehaviour
         Time.timeScale = 1f;
         GameIsPaused = false;
 
-        levelMusic.volume = PlayerPrefs.GetFloat("MusicVolume");
-        levelMusic.UnPause();
+        if (GameObject.FindGameObjectWithTag("LevelMusic") != null)
+        {
+            GameObject.FindGameObjectWithTag("LevelMusic").GetComponentInChildren<AudioSource>().UnPause();
+            GameObject.FindGameObjectWithTag("LevelMusic").GetComponentInChildren<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        }
     }
 
     public void Pause()
     {
+        PauseMenuUI.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         PauseMenuUI.SetActive(true);
+        Continue.SetActive(true);
+        Settings.SetActive(true);
+        Home.SetActive(true);
+        Back.SetActive(false);
+        Slider.SetActive(false);
         Time.timeScale = 0f;
         GameIsPaused = true;
 
-        levelMusic.Pause();
+        if(GameObject.FindGameObjectWithTag("LevelMusic") != null)
+            GameObject.FindGameObjectWithTag("LevelMusic").GetComponentInChildren<AudioSource>().Pause();
+    }
+
+    public void MenuSettings()
+    {
+        Continue.SetActive(false);
+        Settings.SetActive(false);
+        Home.SetActive(false);
+        Back.SetActive(true);
+        Slider.SetActive(true);
+        Slider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MusicVolume", 1f);
+    }
+
+    public void MenuBack()
+    {
+        Continue.SetActive(true);
+        Settings.SetActive(true);
+        Home.SetActive(true);
+        Back.SetActive(false);
+        Slider.SetActive(false);
     }
 
     private IEnumerator Win()

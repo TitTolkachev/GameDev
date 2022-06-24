@@ -75,7 +75,8 @@ public class TowerScript : MonoBehaviour
         selfTower = AllTowers[(int)selfType];
 
         GetComponent<SpriteRenderer>().sprite = selfTower.Spr;
-        GetComponent<SpriteRenderer>().flipX = transform.position.x < 0;
+        if(transform.position.x < 0)
+            GetComponent<SpriteRenderer>().transform.localScale = new Vector3(-1, 1, 1);
     }
 
     private void Update()

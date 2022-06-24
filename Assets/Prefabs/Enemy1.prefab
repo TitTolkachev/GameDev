@@ -120,11 +120,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 420094a90e703504aafa129f82baf419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 30
+  enemyOrientationType: 0
+  health: 40
   speed: 1
   CoolDown: 0.5
   FirstCoolDownToAttack: 0.5
-  DefaultCoolDownToAttack: 2
+  DefaultCoolDownToAttack: 1
   IsAlive: 1
 --- !u!50 &5442389821755132301
 Rigidbody2D:

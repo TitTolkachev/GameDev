@@ -6,6 +6,13 @@ public class LevelMusicScript : MonoBehaviour
 {
     private void Awake()
     {
-        GetComponentInChildren<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
+        if(GameObject.FindGameObjectsWithTag("LevelMusic").Length == 1)
+        {
+            if(gameObject.CompareTag("LevelMusic"))
+                DontDestroyOnLoad(gameObject);
+            GetComponentInChildren<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        }
+        else
+            Destroy(gameObject);
     }
 }

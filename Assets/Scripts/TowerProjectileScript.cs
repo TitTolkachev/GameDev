@@ -13,7 +13,8 @@ public class TowerProjectileScript : MonoBehaviour
     private void Start()
     {
         GetComponent<SpriteRenderer>().sprite = selfProjectile.Spr;
-        GetComponent<SpriteRenderer>().flipX = orientation == -1;
+        if(orientation == -1)
+            GetComponent<SpriteRenderer>().transform.localScale = new Vector3(-1, 1, 1);
     }
 
     void Update()
