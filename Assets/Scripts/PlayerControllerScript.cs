@@ -44,6 +44,12 @@ public class PlayerControllerScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (FindObjectOfType<LevelManagerScript>() != null && FindObjectOfType<LevelManagerScript>().LevelIsCompleted)
+        {
+            animator.Play("Idle");
+            return;
+        }
+
         if (Input.GetKey(KeyCode.Space) && !isAttacking)
         {
             StartCoroutine(attack1());

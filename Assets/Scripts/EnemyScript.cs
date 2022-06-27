@@ -81,12 +81,13 @@ public class EnemyScript : MonoBehaviour
     private IEnumerator ToDamage(Collider2D collision, float time)
     {
         yield return new WaitForSeconds(time);
-        collision.GetComponentInChildren<TowerScript>().TakeDamage(10);
+        if(!collision.GetComponentInChildren<TowerScript>().isDying)
+            collision.GetComponentInChildren<TowerScript>().TakeDamage(10);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Cell") && collision.GetComponent<CellScript>().hasTower && IsAlive)
+        if (collision.CompareTag("Cell") && collision.GetComponent<CellScript>().hasTower && IsAlive && !collision.GetComponentInChildren<TowerScript>().isDying)
         {
             IsAttacking = true;
             CoolDown -= Time.deltaTime;

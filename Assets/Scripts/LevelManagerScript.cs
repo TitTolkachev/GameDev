@@ -47,6 +47,11 @@ public class LevelManagerScript : MonoBehaviour
 
     public Transform cellParent;
 
+    public GameObject LoseScreenPref;
+
+    public bool LevelIsCompleted = false;
+    private bool IsWaitingForPress = false;
+
     void Start()
     {
         AudioSource[] auds = FindObjectsOfType<AudioSource>();
@@ -67,31 +72,40 @@ public class LevelManagerScript : MonoBehaviour
 
     void Update()
     {
-        if (spawnedEnemies < totalEnemies || enemiesOnScreen > 0)
+        if (!LevelIsCompleted)
         {
-            //Конец игры
-            if (health <= 0)
+            if (spawnedEnemies < totalEnemies || enemiesOnScreen > 0)
             {
-                ToLobbyButton();
+                //Конец игры
+                if (health <= 0)
+                {
+                    LevelIsCompleted = true;
+                    HealthText.text = "Health: 0";
+                    StopAllCoroutines();
+                    StartCoroutine(Replay());
+                    Lose();
+                }
+
+                //Перерасчет жизней
+                HealthText.text = "Health: " + health.ToString();
+            }
+            else if (health > 0)
+                StartCoroutine(Win());
+
+            //Вызов меню
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (GameIsPaused)
+                    Resume();
+                else
+                    Pause();
             }
 
-            //Перерасчет жизней
-            HealthText.text = "Health: " + health.ToString();
+            //Перерасчет денег
+            MoneyText.text = GameMoney.ToString();
         }
-        else if (health > 0)
-            StartCoroutine(Win());
-
-        //Вызов меню
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (GameIsPaused)
-                Resume();
-            else
-                Pause();
-        }
-
-        //Перерасчет денег
-        MoneyText.text = GameMoney.ToString();
+        else if (IsWaitingForPress && Input.anyKeyDown)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 
@@ -128,10 +142,10 @@ public class LevelManagerScript : MonoBehaviour
 
                 //При помощи z-index делаю правильное наложение врагов друг на друга
                 if (enemyType == 1)//правый
-                    newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, up - paddingY - sprSizeY/2 - 2 * paddingY * rnd - sprSizeY * rnd, rnd);
+                    newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, up - paddingY - sprSizeY / 2 - 2 * paddingY * rnd - sprSizeY * rnd, rnd);
                 if (enemyType == 2)//левый
                 {
-                    newEnemy.transform.position = new Vector3(spawnPointLeft.transform.position.x, up - paddingY - sprSizeY/2 - 2 * paddingY * rnd - sprSizeY * rnd, rnd);
+                    newEnemy.transform.position = new Vector3(spawnPointLeft.transform.position.x, up - paddingY - sprSizeY / 2 - 2 * paddingY * rnd - sprSizeY * rnd, rnd);
                     newEnemy.GetComponent<SpriteRenderer>().transform.localScale = new Vector3(-1, 1, 1);
                 }
 
@@ -147,7 +161,7 @@ public class LevelManagerScript : MonoBehaviour
                 int rnd = Random.Range(0, fieldHeight);
 
                 //При помощи z-index делаю правильное наложение врагов друг на друга
-                newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, up - paddingY - sprSizeY/2 - 2 * paddingY * rnd - sprSizeY * rnd, rnd);
+                newEnemy.transform.position = new Vector3(spawnPointRight.transform.position.x, up - paddingY - sprSizeY / 2 - 2 * paddingY * rnd - sprSizeY * rnd, rnd);
                 newEnemy.GetComponentInChildren<EnemyScript>().enemyOrientationType = 1;
                 enemiesOnScreen += 1;
                 spawnedEnemies += 1;
@@ -187,24 +201,24 @@ public class LevelManagerScript : MonoBehaviour
         if (type == "right")
         {
             if (x == 0 && y == 0)
-                tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY, 0);
+                tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY, 10 + up - paddingY);
             else if (y == 0)
-                tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY, 0);
+                tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY, 10 + up - paddingY);
             else if (x == 0)
-                tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+                tmpCell.transform.position = new Vector3(right + paddingX, up - paddingY - 2 * paddingY * y - sprSizeY * y, 10 + up - paddingY - 2 * paddingY * y - sprSizeY * y);
             else
-                tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+                tmpCell.transform.position = new Vector3(right + paddingX - 2 * paddingX * x - sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 10 + up - paddingY - 2 * paddingY * y - sprSizeY * y);
         }
         else if (type == "left")
         {
             if (x == 0 && y == 0)
-                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX, up - paddingY, 0);
+                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX, up - paddingY, 10 + up - paddingY);
             else if (y == 0)
-                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX + 2 * paddingX * x + sprSizeX * x, up - paddingY, 0);
+                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX + 2 * paddingX * x + sprSizeX * x, up - paddingY, 10 + up - paddingY);
             else if (x == 0)
-                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX, up - paddingY - 2 * paddingY * y - sprSizeY * y, 10 + up - paddingY - 2 * paddingY * y - sprSizeY * y);
             else
-                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX + 2 * paddingX * x + sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 0);
+                tmpCell.transform.position = new Vector3(-right - sprSizeX - paddingX + 2 * paddingX * x + sprSizeX * x, up - paddingY - 2 * paddingY * y - sprSizeY * y, 10 + up - paddingY - 2 * paddingY * y - sprSizeY * y);
         }
     }
 
@@ -213,10 +227,38 @@ public class LevelManagerScript : MonoBehaviour
     //----------------------------------------
     //Функции для интерфейса:
 
+    IEnumerator Replay()
+    {
+        yield return new WaitForSeconds(2);
+        IsWaitingForPress = true;
+    }
+
     public void ToLobbyButton()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(1);
+    }
+
+    public void Lose()
+    {
+        //Избавляемся от открытого мусора:
+        for (int i = GameObject.Find("CanvasForDestroyPanel").transform.childCount - 1; i >= 0; i--)
+            Destroy(GameObject.Find("CanvasForDestroyPanel").transform.GetChild(i).gameObject);
+        DestroyIsOpen = false;
+        if (FindObjectOfType<ShopScript>() != null)
+            FindObjectOfType<ShopScript>().CloseShop();
+        Resume();
+
+        //Удаляем врагов со сцены
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        for (int i = 0; i < enemies.Length; i++)
+            Destroy(enemies[i].gameObject);
+
+        //Делаем, чтобы ничего не тыкалось
+        GameIsPaused = true;
+
+        //Открываем панель:
+        Instantiate(LoseScreenPref, GameObject.Find("Canvas").transform);
     }
 
     public void Resume()
@@ -234,6 +276,13 @@ public class LevelManagerScript : MonoBehaviour
 
     public void Pause()
     {
+        for (int i = GameObject.Find("CanvasForDestroyPanel").transform.childCount - 1; i >= 0; i--)
+            Destroy(GameObject.Find("CanvasForDestroyPanel").transform.GetChild(i).gameObject);
+        DestroyIsOpen = false;
+
+        if (FindObjectOfType<ShopScript>() != null)
+            FindObjectOfType<ShopScript>().CloseShop();
+
         PauseMenuUI.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         PauseMenuUI.SetActive(true);
         Continue.SetActive(true);
@@ -244,7 +293,7 @@ public class LevelManagerScript : MonoBehaviour
         Time.timeScale = 0f;
         GameIsPaused = true;
 
-        if(GameObject.FindGameObjectWithTag("LevelMusic") != null)
+        if (GameObject.FindGameObjectWithTag("LevelMusic") != null)
             GameObject.FindGameObjectWithTag("LevelMusic").GetComponentInChildren<AudioSource>().Pause();
     }
 
@@ -255,7 +304,7 @@ public class LevelManagerScript : MonoBehaviour
         Home.SetActive(false);
         Back.SetActive(true);
         Slider.SetActive(true);
-        Slider.GetComponent<Slider>().value = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        Slider.GetComponent<UnityEngine.UI.Slider>().value = PlayerPrefs.GetFloat("MusicVolume", 1f);
     }
 
     public void MenuBack()

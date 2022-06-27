@@ -9719,7 +9719,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.39743623, y: 0.05812635}
-    oldSize: {x: 1, y: 0.7916667}
+    oldSize: {x: 1.1428572, y: 0.9047619}
     newSize: {x: 1, y: 0.7916667}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -11725,6 +11725,7 @@ MonoBehaviour:
   cellPref: {fileID: 1916544085777712322, guid: aac750ac9addec34ab2f7251552669de, type: 3}
   nextLevelPortal: {fileID: 1526534241}
   cellParent: {fileID: 1286806742}
+  LoseScreenPref: {fileID: 1607631139949045686, guid: 6b4fee94c2c00fd41a901806dd198d1a, type: 3}
 --- !u!4 &1130789401 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4091654888296154443, guid: a9b08c5e77be34846b8e0ed702d61cd3, type: 3}

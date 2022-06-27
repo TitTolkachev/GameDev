@@ -41,7 +41,7 @@ public class CellScript : MonoBehaviour
                 shopObject.transform.SetParent(GameObject.Find("Canvas").transform, false);
                 shopObject.GetComponent<ShopScript>().selfCell = this;
             }
-            else
+            else if(!GetComponentInChildren<TowerScript>().isDying)
             {
                 FindObjectOfType<LevelManagerScript>().destroyingTower = GetComponentInChildren<TowerScript>();
                 FindObjectOfType<LevelManagerScript>().DestroyIsOpen = true;
@@ -59,8 +59,8 @@ public class CellScript : MonoBehaviour
     {
         GameObject tmpTower = Instantiate(TowerPref);
         tmpTower.transform.SetParent(transform, false);
-        Vector2 towerPos = new Vector2(transform.position.x + tmpTower.GetComponent<SpriteRenderer>().bounds.size.x / 2,
-                                       transform.position.y - tmpTower.GetComponent<SpriteRenderer>().bounds.size.y / 2);
+        Vector2 towerPos = new Vector2(transform.position.x + 0.5f/*tmpTower.GetComponent<SpriteRenderer>().bounds.size.x / 2*/,
+                                       transform.position.y - 0.5f/*tmpTower.GetComponent<SpriteRenderer>().bounds.size.y / 2*/);
         tmpTower.transform.position = towerPos;
         tmpTower.GetComponent<TowerScript>().selfType = (TowerType)tower.type;
 

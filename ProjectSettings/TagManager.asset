@@ -9,6 +9,7 @@ TagManager:
   - Cell
   - HitBox
   - LevelMusic
+  - LoseScreen
   layers:
   - Default
   - TransparentFX

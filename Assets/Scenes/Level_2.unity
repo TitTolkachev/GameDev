@@ -2333,7 +2333,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.39743623, y: 0.05812635}
-    oldSize: {x: 1, y: 0.7916667}
+    oldSize: {x: 1.1428572, y: 0.9047619}
     newSize: {x: 1, y: 0.7916667}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -22862,6 +22862,8 @@ MonoBehaviour:
   cellPref: {fileID: 1916544085777712322, guid: b3b821b739779494cb0a026644be37c8, type: 3}
   nextLevelPortal: {fileID: 1526534241}
   cellParent: {fileID: 1286806742}
+  LoseScreenPref: {fileID: 1607631139949045686, guid: 6b4fee94c2c00fd41a901806dd198d1a, type: 3}
+  LevelIsCompleted: 0
 --- !u!1 &1112734038
 GameObject:
   m_ObjectHideFlags: 0
