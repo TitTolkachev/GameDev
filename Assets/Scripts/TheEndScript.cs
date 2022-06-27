@@ -9,6 +9,18 @@ public class TheEndScript : MonoBehaviour
 
     private bool TextAppeared = false;
 
+    public GameObject aud;
+
+    private void Awake()
+    {
+        AudioSource[] obj = FindObjectsOfType<AudioSource>();
+        for (int i = 0; i < obj.Length; i++)
+            Destroy(obj[i].gameObject);
+
+        GameObject au = Instantiate(aud);
+        au.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
+    }
+
     void Start()
     {
         StartCoroutine(ContinueTextAppearence());
