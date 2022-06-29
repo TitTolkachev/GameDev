@@ -44,7 +44,7 @@ public class PlayerControllerScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (FindObjectOfType<LevelManagerScript>() != null && FindObjectOfType<LevelManagerScript>().LevelIsCompleted)
+        if (FindObjectOfType<LevelManagerScript>() != null && FindObjectOfType<LevelManagerScript>().LevelIsCompleted && FindObjectOfType<LevelManagerScript>().health <= 0)
         {
             animator.Play("Idle");
             return;

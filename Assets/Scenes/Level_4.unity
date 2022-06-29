@@ -7718,18 +7718,18 @@ MonoBehaviour:
   spawnPointLeft: {fileID: 3760892886676575645, guid: 20a4f3d9c82af7042a245a928039da7d, type: 3}
   finishPoint: {fileID: 1511018746030099996, guid: 0843dc09aa53d2648973a8d7af16cb41, type: 3}
   enemies:
-  - {fileID: 6127772269458341323, guid: 0c86bc16dd3c38344a5ea9af6344fce9, type: 3}
   - {fileID: 1015298495759069992, guid: ca34842dcafa2724890398abb12b193f, type: 3}
+  - {fileID: 6127772269458341323, guid: 0c86bc16dd3c38344a5ea9af6344fce9, type: 3}
   HealthText: {fileID: 1893240507}
   MoneyText: {fileID: 1555476429}
   levelType: 2
   health: 5
   GameMoney: 100
-  totalEnemies: 30
-  enemiesPerSpawn: 3
+  totalEnemies: 50
+  enemiesPerSpawn: 1
   enemiesOnScreen: 0
   spawnedEnemies: 0
-  spawnDelay: 3
+  spawnDelay: 7
   fieldWidth: 8
   fieldHeight: 6
   paddingX: 0.3
@@ -7751,6 +7751,7 @@ MonoBehaviour:
   cellParent: {fileID: 1286806742}
   LoseScreenPref: {fileID: 1607631139949045686, guid: 6b4fee94c2c00fd41a901806dd198d1a, type: 3}
   LevelIsCompleted: 0
+  possibleEnemy: 0
 --- !u!1001 &1216469634
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -52,6 +52,8 @@ public class LevelManagerScript : MonoBehaviour
     public bool LevelIsCompleted = false;
     private bool IsWaitingForPress = false;
 
+    public float possibleEnemy = 1;
+
     void Start()
     {
         AudioSource[] auds = FindObjectsOfType<AudioSource>();
@@ -74,18 +76,18 @@ public class LevelManagerScript : MonoBehaviour
     {
         if (!LevelIsCompleted)
         {
+            //Конец игры
+            if (health <= 0)
+            {
+                LevelIsCompleted = true;
+                HealthText.text = "Health: 0";
+                StopAllCoroutines();
+                StartCoroutine(Replay());
+                Lose();
+            }
+
             if (spawnedEnemies < totalEnemies || enemiesOnScreen > 0)
             {
-                //Конец игры
-                if (health <= 0)
-                {
-                    LevelIsCompleted = true;
-                    HealthText.text = "Health: 0";
-                    StopAllCoroutines();
-                    StartCoroutine(Replay());
-                    Lose();
-                }
-
                 //Перерасчет жизней
                 HealthText.text = "Health: " + health.ToString();
             }
@@ -100,12 +102,12 @@ public class LevelManagerScript : MonoBehaviour
                 else
                     Pause();
             }
-
-            //Перерасчет денег
-            MoneyText.text = GameMoney.ToString();
         }
         else if (IsWaitingForPress && Input.anyKeyDown)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        //Перерасчет денег
+        MoneyText.text = GameMoney.ToString();
     }
 
 
@@ -120,6 +122,8 @@ public class LevelManagerScript : MonoBehaviour
             StartCoroutine(SpawnExtra(0));
 
             yield return new WaitForSeconds(spawnDelay + enemiesPerSpawn);
+            enemiesPerSpawn = (int)Mathf.Ceil(enemiesPerSpawn * 1.2f);
+            possibleEnemy += 0.5f;
             StartCoroutine(Spawn());
         }
     }
@@ -136,7 +140,7 @@ public class LevelManagerScript : MonoBehaviour
             {
                 int enemyType = Random.Range(1, 3);
 
-                GameObject newEnemy = Instantiate(enemies[Random.Range(0, enemies.Length)]);
+                GameObject newEnemy = Instantiate(enemies[Random.Range(0, Mathf.Min((int) possibleEnemy, enemies.Length))]);
 
                 int rnd = Random.Range(0, fieldHeight);
 
@@ -156,7 +160,7 @@ public class LevelManagerScript : MonoBehaviour
             }
             else if (levelType == 2)
             {
-                GameObject newEnemy = Instantiate(enemies[Random.Range(0, enemies.Length)]);
+                GameObject newEnemy = Instantiate(enemies[Random.Range(0, Mathf.Min((int)possibleEnemy, enemies.Length))]);
 
                 int rnd = Random.Range(0, fieldHeight);
 
@@ -318,9 +322,9 @@ public class LevelManagerScript : MonoBehaviour
 
     private IEnumerator Win()
     {
+        LevelIsCompleted = true;
         if (PlayerPrefs.GetInt("LevelComplete") < SceneManager.GetActiveScene().buildIndex - 1)
             PlayerPrefs.SetInt("LevelComplete", SceneManager.GetActiveScene().buildIndex - 1);
-        health = 0;
         yield return new WaitForSeconds(2);
 
         nextLevelPortal.SetActive(true);

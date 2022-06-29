@@ -11604,12 +11604,12 @@ MonoBehaviour:
   MoneyText: {fileID: 1327461480}
   levelType: 1
   health: 5
-  GameMoney: 200
-  totalEnemies: 30
-  enemiesPerSpawn: 3
+  GameMoney: 100
+  totalEnemies: 40
+  enemiesPerSpawn: 1
   enemiesOnScreen: 0
   spawnedEnemies: 0
-  spawnDelay: 3
+  spawnDelay: 7
   fieldWidth: 7
   fieldHeight: 6
   paddingX: 0.3
@@ -11631,6 +11631,7 @@ MonoBehaviour:
   cellParent: {fileID: 1286806742}
   LoseScreenPref: {fileID: 1607631139949045686, guid: 6b4fee94c2c00fd41a901806dd198d1a, type: 3}
   LevelIsCompleted: 0
+  possibleEnemy: 1
 --- !u!4 &1130789401 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4091654888296154443, guid: a9b08c5e77be34846b8e0ed702d61cd3, type: 3}

@@ -9,7 +9,7 @@ public class DecorationScript : MonoBehaviour
     {
         if (collision.CompareTag("HitBox"))
         {
-            FindObjectOfType<LevelManagerScript>().GameMoney += 2;
+            FindObjectOfType<LevelManagerScript>().GameMoney += Random.Range(0, 10);
             Destroy(gameObject);
         }
     }

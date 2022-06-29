@@ -12,11 +12,12 @@ public class Tower
     public float range, Cooldown, CurrCooldown = 0;
     public Sprite Spr;
 
-    public Tower(int towerType, string name, int type, float range, float cooldown, int price, string path)
+    public Tower(int towerType, string name, int type, float range, float cooldown, int price, string path, int health)
     {
         this.towerType = towerType;
         this.range = range;
         this.type = type;
+        this.health = health;
         Cooldown = cooldown;
         Spr = Resources.Load<Sprite>(path);
         Name = name;
@@ -79,19 +80,19 @@ public class TowerScript : MonoBehaviour
         if ((int)selfType == 5)
             anim.runtimeAnimatorController = Resources.Load("Animation/Controller/Archer3") as RuntimeAnimatorController;
 
-        AllTowers.Add(new Tower(1, "Tower_1", 0, 2, .3f, 50, "TowerSprites/Tower1"));
-        AllTowers.Add(new Tower(1, "Tower_2", 1, 5, 1, 70, "TowerSprites/Tower2"));
-        AllTowers.Add(new Tower(2, "Archer Tower", 2, 7, 1, 50, "TowerSprites/ArcherTower"));
-        AllTowers.Add(new Tower(2, "Archer1", 3, 7, 1, 50, "TowerSprites/Archer1"));
-        AllTowers.Add(new Tower(2, "Archer2", 4, 7, 1, 50, "TowerSprites/Archer2"));
-        AllTowers.Add(new Tower(2, "Archer3", 5, 7, 1, 50, "TowerSprites/Archer3"));
+        AllTowers.Add(new Tower(1, "Barrel on fire", 0, 2, .3f, 50, "TowerSprites/Tower1", 50));
+        AllTowers.Add(new Tower(1, "Santa's gift", 1, 5, 1.2f, 75, "TowerSprites/Tower2", 20));
+        AllTowers.Add(new Tower(2, "Archer Tower", 2, 3.5f, 1.7f, 45, "TowerSprites/ArcherTower", 40));
+        AllTowers.Add(new Tower(2, "Bone Destroyer", 3, 7, 1.2f, 40, "TowerSprites/Archer1", 20));
+        AllTowers.Add(new Tower(2, "Wood Elf", 4, 10, 1, 105, "TowerSprites/Archer2", 50));
+        AllTowers.Add(new Tower(2, "Red Hood", 5, 12, 1, 70, "TowerSprites/Archer3", 30));
 
         AllProjectiles.Add(new TowerProjectile(1, 7, 2, "ProjectilesSprites/Projectile1"));
         AllProjectiles.Add(new TowerProjectile(1, 3, 10, "ProjectilesSprites/Projectile2"));
-        AllProjectiles.Add(new TowerProjectile(2, 5, 10, "ProjectilesSprites/ArcherTowerProjectile"));
+        AllProjectiles.Add(new TowerProjectile(2, 5, 20, "ProjectilesSprites/ArcherTowerProjectile"));
         AllProjectiles.Add(new TowerProjectile(2, 7, 10, "ProjectilesSprites/ArcherProjectile"));
         AllProjectiles.Add(new TowerProjectile(2, 9, 20, "ProjectilesSprites/Archer2Projectile"));
-        AllProjectiles.Add(new TowerProjectile(2, 7, 5, "ProjectilesSprites/ArcherProjectile"));
+        AllProjectiles.Add(new TowerProjectile(2, 7, 15, "ProjectilesSprites/ArcherProjectile"));
 
         selfTower = AllTowers[(int)selfType];
 

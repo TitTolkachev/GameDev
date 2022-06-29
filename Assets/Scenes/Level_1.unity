@@ -8102,11 +8102,11 @@ MonoBehaviour:
   levelType: 2
   health: 5
   GameMoney: 100
-  totalEnemies: 15
+  totalEnemies: 30
   enemiesPerSpawn: 1
   enemiesOnScreen: 0
   spawnedEnemies: 0
-  spawnDelay: 2
+  spawnDelay: 7
   fieldWidth: 7
   fieldHeight: 5
   paddingX: 0.3

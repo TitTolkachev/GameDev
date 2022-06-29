@@ -16,4 +16,14 @@ public class LobbyButtonsScript : MonoBehaviour
         Application.Quit();
     }
 
+    public void BackButton()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void AuthorButton()
+    {
+        SceneManager.LoadScene(14);
+    }
+
 }

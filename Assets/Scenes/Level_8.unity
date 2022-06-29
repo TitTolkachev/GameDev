@@ -21648,20 +21648,21 @@ MonoBehaviour:
   spawnPointLeft: {fileID: 1476712587}
   finishPoint: {fileID: 1511018746030099996, guid: 0843dc09aa53d2648973a8d7af16cb41, type: 3}
   enemies:
-  - {fileID: 2726496256030630735, guid: 3ded794b7be544849bc4ab105bab908a, type: 3}
-  - {fileID: 9141855474305777699, guid: 499476c17b7b2a641885032f890de4e5, type: 3}
-  - {fileID: 6127772269458341323, guid: 0c86bc16dd3c38344a5ea9af6344fce9, type: 3}
   - {fileID: 1015298495759069992, guid: ca34842dcafa2724890398abb12b193f, type: 3}
+  - {fileID: 9141855474305777699, guid: 499476c17b7b2a641885032f890de4e5, type: 3}
+  - {fileID: 2726496256030630735, guid: 3ded794b7be544849bc4ab105bab908a, type: 3}
+  - {fileID: 6127772269458341323, guid: 0c86bc16dd3c38344a5ea9af6344fce9, type: 3}
+  - {fileID: 6782752711719355999, guid: 3a0f3be7209b6124399a49a8c31341c3, type: 3}
   HealthText: {fileID: 409560322}
   MoneyText: {fileID: 1358387158}
   levelType: 1
   health: 5
   GameMoney: 200
-  totalEnemies: 20
-  enemiesPerSpawn: 2
+  totalEnemies: 40
+  enemiesPerSpawn: 1
   enemiesOnScreen: 0
   spawnedEnemies: 0
-  spawnDelay: 3
+  spawnDelay: 7
   fieldWidth: 7
   fieldHeight: 6
   paddingX: 0.3
@@ -21683,6 +21684,7 @@ MonoBehaviour:
   cellParent: {fileID: 1286806742}
   LoseScreenPref: {fileID: 1607631139949045686, guid: 6b4fee94c2c00fd41a901806dd198d1a, type: 3}
   LevelIsCompleted: 0
+  possibleEnemy: 1
 --- !u!1 &1112734038
 GameObject:
   m_ObjectHideFlags: 0
@@ -23867,8 +23869,8 @@ Transform:
   - {fileID: 1609580913}
   - {fileID: 1602227692}
   - {fileID: 60162678}
-  - {fileID: 185542391}
   - {fileID: 1264180827}
+  - {fileID: 185542391}
   - {fileID: 308061565}
   - {fileID: 698727740}
   m_Father: {fileID: 0}

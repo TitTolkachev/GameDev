@@ -7,6 +7,7 @@ public class EnemyScript : MonoBehaviour
     public int enemyOrientationType;//1 - правый, 2 - левый
     public int health = 30;
     public float speed = 1;
+    int startHealth;
 
     public float CoolDown;
     public float FirstCoolDownToAttack = 0.5f;
@@ -20,6 +21,7 @@ public class EnemyScript : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        startHealth = health;
     }
     void Update()
     {
@@ -43,7 +45,7 @@ public class EnemyScript : MonoBehaviour
         IsAlive = false;
         anim.SetBool("isAlive", false);
         FindObjectOfType<LevelManagerScript>().enemiesOnScreen -= 1;
-        FindObjectOfType<LevelManagerScript>().GameMoney += 10;
+        FindObjectOfType<LevelManagerScript>().GameMoney += Mathf.Min(85, Mathf.Max(1, (int) (startHealth * ((float) (1 - (float) FindObjectOfType<LevelManagerScript>().spawnedEnemies / (float) FindObjectOfType<LevelManagerScript>().totalEnemies)))));
         yield return new WaitForSeconds(1);
         Destroy(gameObject);
     }
@@ -53,7 +55,7 @@ public class EnemyScript : MonoBehaviour
         Vector3 dir;
         if (enemyOrientationType == 1)
             dir = new(-1, 0, 0);
-        else 
+        else
             dir = new(1, 0, 0);
 
         transform.Translate(speed * Time.deltaTime * dir.normalized);
@@ -81,7 +83,7 @@ public class EnemyScript : MonoBehaviour
     private IEnumerator ToDamage(Collider2D collision, float time)
     {
         yield return new WaitForSeconds(time);
-        if(!collision.GetComponentInChildren<TowerScript>().isDying)
+        if (!collision.GetComponentInChildren<TowerScript>().isDying)
             collision.GetComponentInChildren<TowerScript>().TakeDamage(10);
     }
 

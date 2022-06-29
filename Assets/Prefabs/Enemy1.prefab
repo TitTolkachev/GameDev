@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyOrientationType: 0
-  health: 40
+  health: 50
   speed: 1
   CoolDown: 0.5
   FirstCoolDownToAttack: 0.5
@@ -164,7 +164,7 @@ BoxCollider2D:
   m_Offset: {x: -0.04, y: -0.16}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0.2}
     oldSize: {x: 1, y: 0.75}
     newSize: {x: 0.48, y: 0.48}
     adaptiveTilingThreshold: 0.5
